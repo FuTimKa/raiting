@@ -1,0 +1,27 @@
+name: RatingPlugin
+version: 1.1
+main: org.futimka.ratingplugin.RatingPlugin
+api-version: 1.16
+commands:
+  rate:
+    description: Оценить другого игрока
+    usage: /<command> <игрок>
+    permission: ratingplugin.rate
+  checkrating:
+    description: Проверить свой рейтинг
+    usage: /<command>
+    permission: ratingplugin.checkrating
+  merate:
+    description: Узнать свой рейтинг
+    usage: /<command>
+    permission: ratingplugin.merate
+permissions:
+  ratingplugin.rate:
+    description: Позволяет игроку оценивать других игроков
+    default: true
+  ratingplugin.checkrating:
+    description: Позволяет игроку проверять свой рейтинг
+    default: true
+  ratingplugin.merate:
+    description: Позволяет игроку узнавать свой рейтинг
+    default: true

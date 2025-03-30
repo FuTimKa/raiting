@@ -1,0 +1,5 @@
+org\futimka\ratingplugin\RatingPlugin.class
+org\futimka\ratingplugin\PlayerDataManager.class
+org\futimka\ratingplugin\MeRateCommand.class
+org\futimka\CheckRatingCommand\CheckRatingCommand.class
+org\futimka\ratingplugin\RateCommand.class
