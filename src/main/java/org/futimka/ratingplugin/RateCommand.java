@@ -21,7 +21,7 @@ public class RateCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage("Эта команда доступна только игрокам.");
+            sender.sendMessage(plugin.getMessage("notPlayer")); // Используем сообщение из конфигурации
             return true;
         }
 
@@ -29,31 +29,31 @@ public class RateCommand implements CommandExecutor {
 
         // Проверка прав
         if (!player.hasPermission("ratingplugin.rate")) {
-            player.sendMessage("У вас нет прав для использования этой команды.");
+            player.sendMessage(plugin.getMessage("noPermission")); // Используем сообщение из конфигурации
             return true;
         }
 
         if (args.length < 1) {
-            player.sendMessage("Используйте: /rate <игрок>");
+            player.sendMessage(plugin.getMessage("usage")); // Используем сообщение из конфигурации
             return true;
         }
 
         Player target = Bukkit.getPlayer(args[0]);
         if (target == null || !target.isOnline()) {
-            player.sendMessage("Игрок не найден.");
+            player.sendMessage(plugin.getMessage("playerNotFound")); // Используем сообщение из конфигурации
             return true;
         }
 
         // Запретить игроку оценивать самого себя
         if (player.equals(target)) {
-            player.sendMessage("Вы не можете оценивать самого себя.");
+            player.sendMessage(plugin.getMessage("selfRating")); // Используем сообщение из конфигурации
             return true;
         }
 
         // Проверка на повторную оценку одного и того же игрока
         String lastRatedPlayer = lastRatedPlayers.get(player.getName());
         if (lastRatedPlayer != null && lastRatedPlayer.equals(target.getName())) {
-            player.sendMessage("Вы уже оценили " + target.getName() + ". Вы больше не можете его оценивать.");
+            player.sendMessage(plugin.getMessage("alreadyRated").replace("{player}", target.getName())); // Используем сообщение из конфигурации
             return true;
         }
 
@@ -63,7 +63,7 @@ public class RateCommand implements CommandExecutor {
 
         // Если игрок оценивал целевого игрока менее 60 секунд назад, запретить повторную оценку
         if (currentTime - lastRatingTime < 60) {
-            player.sendMessage("Вы не можете оценивать " + target.getName() + " снова так быстро. Подождите 60 секунд.");
+            player.sendMessage(plugin.getMessage("ratingCooldown").replace("{player}", target.getName())); // Используем сообщение из конфигурации
             return true;
         }
 
@@ -98,31 +98,30 @@ public class RateCommand implements CommandExecutor {
                         case "money":
                             // Здесь вы можете интегрировать с плагином Vault или другим плагином для выдачи денег
                             // Например: Economy.add(target.getName(), amount);
-                            player.sendMessage("Вы оценили " + target.getName() + ". Он получил " + amount + " монет!");
+                            player.sendMessage(plugin.getMessage("rewardMessage").replace("{player}", target.getName()).replace("{amount}", String.valueOf(amount))); // Используем сообщение из конфигурации
                             break;
                         case "item":
                             // Выдача предмета
                             target.getInventory().addItem(new org.bukkit.inventory.ItemStack(org.bukkit.Material.valueOf(item), amount));
-                            player.sendMessage("Вы оценили " + target.getName() + ". Он получил " + amount + " " + item + "!");
+                            player.sendMessage(plugin.getMessage("rewardMessage").replace("{player}", target.getName()).replace("{amount}", String.valueOf(amount)).replace("{item}", item)); // Используем сообщение из конфигурации
                             break;
                         case "command":
                             // Выполнение команды
                             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), commandStr.replace("{player}", target.getName()));
                             break;
                         default:
-                            player.sendMessage("Неправильный тип приза.");
+                            player.sendMessage(plugin.getMessage("invalidPrizeType")); // Используем сообщение из конфигурации
                             break;
                     }
                 }
 
                 // Оповещение игрока о похвале
-                target.sendMessage("Вас похвалили! Теперь у вас " + currentRating + " очков рейтинга и уровень награды " + rewardLevel + "!");
-                player.sendMessage("Вы оценили " + target.getName() + ". Он получил награду уровня " + rewardLevel + "!");
+                target.sendMessage(plugin.getMessage("praise").replace("{rating}", String.valueOf(currentRating)).replace("{level}", String.valueOf(rewardLevel))); // Теперь сообщение о новом рейтинге приходит только целевому игроку
             } else {
-                player.sendMessage(target.getName() + " уже достиг максимального уровня награды.");
+                player.sendMessage(plugin.getMessage("maxRewardLevel").replace("{player}", target.getName())); // Используем сообщение из конфигурации
             }
         } else {
-            player.sendMessage("Вы оценили " + target.getName() + ". У него теперь " + currentRating + " очков рейтинга.");
+            target.sendMessage(plugin.getMessage("ratingInfo").replace("{player}", target.getName()).replace("{rating}", String.valueOf(currentRating))); // Теперь сообщение о текущем рейтинге приходит только целевому игроку
         }
 
         return true;

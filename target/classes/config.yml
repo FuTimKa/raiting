@@ -1,31 +1,46 @@
 # Конфигурация плагина RatingPlugin
 
+# Сообщения, используемые в плагине
+messages:
+  notPlayer: "&cЭта команда доступна только игрокам."
+  noPermission: "&eУ вас нет прав для использования этой команды."
+  usage: "&7Используйте: /rate <игрок>"
+  playerNotFound: "&cИгрок не найден."
+  selfRating: "&6Вы не можете оценивать самого себя."
+  alreadyRated: "&aВы уже оценили {player}. Вы больше не можете его оценивать."
+  ratingCooldown: "&eВы не можете оценивать {player} снова так быстро. Подождите 60 секунд."
+  rewardMessage: "&aВы оценили {player}. Он получил {amount} монет!"
+  praise: "&bВас похвалили! Теперь у вас {rating} очков рейтинга и уровень награды {level}!"
+  maxRewardLevel: "&c{player} уже достиг максимального уровня награды."
+  invalidPrizeType: "&cНеправильный тип приза."
+  ratingInfo: "&7{player}, ваш текущий рейтинг: {rating}."
+
+# Настройки наград
 reward:
-  max-level: 5                 # Максимальный уровень награды
-  allow-repeated-rating: false  # Разрешить повторное оценивание одного и того же игрока (true/false)
-  sound:
-    praise: "ENTITY_PLAYER_LEVELUP" # Звук, когда игрока похвалили
-    sender: "ENTITY_PLAYER_LEVELUP"  # Звук, когда отправитель получает подтверждение
+  threshold: 20 # Порог для получения награды
+  max-level: 5  # Максимальный уровень награды
+  increment: 10  # Увеличение награды
+
+# Призы для уровней наград
+reward:
   levels:
     level-1:
-      threshold: 10             # Порог рейтинга для уровня 1
-      type: "money"             # Тип приза (money, item, command)
-      amount: 10                # Количество денег
+      type: "money"
+      amount: 10
     level-2:
-      threshold: 20             # Порог рейтинга для уровня 2
-      type: "item"              # Тип приза
-      item: "DIAMOND"           # Предмет, который игрок получит
-      amount: 1                 # Количество предметов
+      type: "item"
+      item: "DIAMOND"
+      amount: 1
     level-3:
-      threshold: 30             # Порог рейтинга для уровня 3
-      type: "command"           # Тип приза
-      command: "give {player} diamond 1" # Команда, которая будет выполнена
+      type: "command"
+      command: "give {player} DIAMOND 1"
     level-4:
-      threshold: 40             # Порог рейтинга для уровня 4
-      type: "money"             # Тип приза
-      amount: 20                # Количество денег
+      type: "money"
+      amount: 20
     level-5:
-      threshold: 50             # Порог рейтинга для уровня 5
-      type: "item"              # Тип приза
-      item: "GOLD_INGOT"        # Предмет, который игрок получит
-      amount: 5                 # Количество предметов
+      type: "item"
+      item: "GOLD_INGOT"
+      amount: 5
+
+# Данные игроков
+players: {}
