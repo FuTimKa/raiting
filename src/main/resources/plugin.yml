@@ -1,5 +1,5 @@
 name: RatingPlugin
-version: 1.1
+version: 1.2
 main: org.futimka.ratingplugin.RatingPlugin
 api-version: 1.16
 commands:
